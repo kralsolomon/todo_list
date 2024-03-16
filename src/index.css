@@ -8,7 +8,7 @@
 }
 
 button{
-    border: inherit;
+    border: none;
     cursor: pointer;
 }
 
@@ -50,9 +50,15 @@ button:hover{
 .todo{
     border-radius: 50px;
     width: 86px;
+    color: #081E34;
+
+    background-color: #E4E5E7;
+    margin-right: 16px;
+}
+
+.todo:focus{
     color: #ffffff;
     background-color: #9098A3;
-    margin-right: 16px;
 }
 
 
@@ -64,12 +70,22 @@ button:hover{
     margin-right: 16px;
 }
 
+.done:focus{
+    color: #ffffff;
+    background-color: #9098A3;
+}
+
 .trash{
     border-radius: 50px;
     width: 86px;
     color: #081E34;
     background-color: #E4E5E7;
     margin-right: 16px;
+}
+
+.trash:focus{
+    color: #ffffff;
+    background-color: #9098A3;
 }
 
 
@@ -134,4 +150,20 @@ button:hover{
     height: 120px;
     border-radius: 15px;
     border: none;
+}
+
+.show_buttons{
+    background-color: white;
+    border-width: 0 !important;
+    font-size: 20px;
+}
+
+ul{
+    list-style-type: none;
+}
+
+.completed-task {
+    text-decoration: line-through; /* Add line-through decoration to the text */
+    color: #959595;
+
 }
