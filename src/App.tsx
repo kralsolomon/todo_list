@@ -42,7 +42,7 @@ function App() {
     filterTodos();
   }, [filterType, todos]);
 
-  const addTodo = () => {
+  const addTodo = (inputValue: string) => {
     if (inputValue.trim() !== "") {
       setTodos((prevTodos) => [
         ...prevTodos,
@@ -57,42 +57,31 @@ function App() {
     }
   };
 
-  const moveTodoToTrash = (index: number) => {
+  const updateTodo = (todoToUpdate: Todo, updatedFields: Partial<Todo>) => {
     setTodos((prevTodos) => {
-      const updatedTodos = [...prevTodos];
-      updatedTodos[index] = { ...updatedTodos[index], trashed: true };
-      return updatedTodos;
+      return prevTodos.map((todo) =>
+        todo === todoToUpdate ? { ...todo, ...updatedFields } : todo,
+      );
     });
     setShowButtonsForTask(null);
   };
 
-  const restoreTodo = (index: number) => {
-    setTodos((prevTodos) => {
-      const updatedTodos = [...prevTodos];
-      updatedTodos[index] = { ...updatedTodos[index], trashed: false };
-      return updatedTodos;
-    });
-    setShowButtonsForTask(null);
+  const moveTodoToTrash = (todo: Todo) => {
+    updateTodo(todo, { trashed: true });
   };
 
-  const doneTodo = (index: number) => {
-    setTodos((prevTodos) => {
-      const updatedTodos = [...prevTodos];
-      updatedTodos[index] = { ...updatedTodos[index], done: true };
-      return updatedTodos;
-    });
-    setShowButtonsForTask(null);
+  const restoreTodo = (todo: Todo) => {
+    updateTodo(todo, { trashed: false });
   };
 
-  const deleteTodo = (index: number) => {
-    setTodos((prevTodos) => {
-      const updatedTodos = [...prevTodos];
-      updatedTodos.splice(index, 1);
-      return updatedTodos;
-    });
-    setShowButtonsForTask(null);
+  const doneTodo = (todo: Todo) => {
+    updateTodo(todo, { done: true });
   };
 
+  const deleteTodo = (todo: Todo) => {
+    setTodos((prevTodos) => prevTodos.filter((t) => t !== todo));
+    setShowButtonsForTask(null);
+  };
   // const filterTodos = () => {
   //   if (filterType === "todo") {
   //     setFilteredTodos(todos.filter((todo) => todo.todo));
@@ -161,7 +150,7 @@ function App() {
                   />
                   <button
                     onClick={() => {
-                      addTodo();
+                      addTodo(inputValue);
                       setShowForm(!showForm);
                     }}
                     type="submit"
@@ -202,7 +191,7 @@ function App() {
                 <input
                   type="checkbox"
                   checked={todo.done}
-                  onChange={() => doneTodo(index)}
+                  onChange={() => doneTodo(todo)}
                   style={{ marginRight: 10 }}
                 />
                 <span className={todo.done ? "completed-task" : ""}>
@@ -214,7 +203,7 @@ function App() {
                   <>
                     {!todo.trashed && (
                       <button
-                        onClick={() => moveTodoToTrash(index)}
+                        onClick={() => moveTodoToTrash(todo)}
                         style={{
                           margin: "0 10px 0 10px",
                           borderRadius: 10,
@@ -226,7 +215,7 @@ function App() {
 
                     {todo.trashed && (
                       <button
-                        onClick={() => restoreTodo(index)}
+                        onClick={() => restoreTodo(todo)}
                         style={{
                           margin: "0 10px 0 10px",
                           borderRadius: 10,
@@ -237,7 +226,7 @@ function App() {
                     )}
 
                     <button
-                      onClick={() => deleteTodo(index)}
+                      onClick={() => deleteTodo(todo)}
                       style={{
                         margin: "0 10px 0 10px",
                         borderRadius: 10,
